@@ -92,4 +92,14 @@ export class CalendarViewComponent implements OnInit {
       }
     };
   }
+
+  previousMonth() {
+    this.selectedDate = new Date(this.selectedDate.getFullYear(), this.selectedDate.getMonth() - 1, 1);
+    this.generateCalendarDates();
+  }
+
+  nextMonth() {
+    this.selectedDate = new Date(this.selectedDate.getFullYear(), this.selectedDate.getMonth() + 1, 1);
+    this.generateCalendarDates();
+  }
 }

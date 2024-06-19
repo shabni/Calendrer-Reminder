@@ -2,54 +2,56 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 1200px; 
-  margin: 0 auto;
-  padding: 20px;
 }
 
-.calendar-events {
+.navigation-container {
   display: flex;
-  justify-content: center;
-  margin-top: 20px;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
 }
+
+.current-month-year {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.calendar-events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+  gap: 20px; 
+  width: 100%; }
 
 .calendar-day {
-  width: calc(100% / 7);
+  background-color: #f5f5f5;
   padding: 10px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
+  border-radius: 4px;
 }
 
 .calendar-day-header {
   font-size: 16px;
   font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.calendar-events-list {
-  display: flex;
-  flex-direction: column;
+  margin-bottom: 5px;
 }
 
 .calendar-event {
-  background-color: #007bff;
-  color: #fff;
-  padding: 5px;
-  margin-bottom: 5px;
-  border-radius: 3px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
   cursor: pointer;
+  background-color: #2196F3; 
+  color: #fff; 
+
 }
 
 .calendar-event-time {
   font-size: 14px;
+  color: #ffffffb3;
 }
 
 .calendar-event-title {
   font-size: 16px;
   font-weight: bold;
-}
-
-.has-appointment .mat-calendar-body-cell-content {
-  background-color: #f0f0f0;
 }

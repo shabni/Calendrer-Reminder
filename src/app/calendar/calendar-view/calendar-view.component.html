@@ -1,10 +1,24 @@
 <div class="calendar-container">
   <button mat-raised-button color="primary" (click)="openAppointmentForm()">Add Appointment</button>
 
-  <mat-calendar [selected]="selectedDate" (selectedChange)="dateSelected($event)" [dateClass]="dateClass">
-  </mat-calendar>
+  <div class="navigation-container">
+    <button mat-icon-button (click)="previousMonth()">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
 
-  <div class="calendar-events">
+    <div class="current-month-year">
+      {{ selectedDate | date: 'MMMM yyyy' }}
+    </div>
+
+    <button mat-icon-button (click)="nextMonth()">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+
+  <!-- <mat-calendar [selected]="selectedDate" (selectedChange)="dateSelected($event)" [dateClass]="dateClass">
+  </mat-calendar> -->
+
+  <div class="calendar-events-grid">
     <div class="calendar-day" *ngFor="let date of calendarDates">
       <h3 class="calendar-day-header">{{ date | date: 'EEEE, MMM d' }}</h3>
       <div class="calendar-events-list">
