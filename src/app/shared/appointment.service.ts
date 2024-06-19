@@ -41,4 +41,9 @@ export class AppointmentService {
   updateAppointments(appointments: Appointment[]): void {
     this.appointmentsSubject.next(appointments);
   }
+
+  hasAppointmentOnDate(date: string): boolean {
+    const appointments = this.appointmentsSubject.value;
+    return appointments.some(appointment => appointment.date.toISOString().slice(0, 10) === date);
+  }
 }

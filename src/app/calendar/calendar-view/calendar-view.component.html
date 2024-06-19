@@ -1,19 +1,19 @@
 <div class="calendar-container">
   <button mat-raised-button color="primary" (click)="openAppointmentForm()">Add Appointment</button>
 
-  <div class="appointment-list" cdkDropList (cdkDropListDropped)="drop($event)">
-    <div class="appointment-item" *ngFor="let appointment of appointments$ | async" cdkDrag>
-      <div class="appointment-content">
-        <h3>{{ appointment.title }}</h3>
-        <p>{{ appointment.date | date }}</p>
-      </div>
-      <div class="appointment-actions">
-        <button mat-icon-button (click)="editAppointment(appointment)">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button (click)="deleteAppointment(appointment.id)">
-          <mat-icon>delete</mat-icon>
-        </button>
+  <mat-calendar [selected]="selectedDate" (selectedChange)="dateSelected($event)" [dateClass]="dateClass">
+  </mat-calendar>
+
+  <div class="calendar-events">
+    <div class="calendar-day" *ngFor="let date of calendarDates">
+      <h3 class="calendar-day-header">{{ date | date: 'EEEE, MMM d' }}</h3>
+      <div class="calendar-events-list">
+        <div *ngFor="let appointment of getAppointmentsOnDate(date)">
+          <div class="calendar-event" (click)="editAppointment(appointment)">
+            <div class="calendar-event-time">{{ appointment.date | date: 'h:mm a' }}</div>
+            <div class="calendar-event-title">{{ appointment.title }}</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

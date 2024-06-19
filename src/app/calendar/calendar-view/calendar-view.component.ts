@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { AppointmentService } from '../../shared/appointment.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -6,6 +5,7 @@ import { Observable, take } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { Appointment } from '../../shared/appointment';
 import { AppointmentFormComponent } from '../appointment-form/appointment-form.component';
+import { MatCalendarCellCssClasses } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-calendar-view',
@@ -13,7 +13,9 @@ import { AppointmentFormComponent } from '../appointment-form/appointment-form.c
   styleUrls: ['./calendar-view.component.scss']
 })
 export class CalendarViewComponent implements OnInit {
-  appointments$: Observable<Appointment[]>;
+  appointments: Appointment[] = [];
+  selectedDate: Date = new Date();
+  calendarDates: Date[] = [];
 
   constructor(
     private appointmentService: AppointmentService,
@@ -21,13 +23,16 @@ export class CalendarViewComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.appointments$ = this.appointmentService.appointments$;
+    this.appointmentService.appointments$.subscribe(appointments => {
+      this.appointments = appointments;
+      this.generateCalendarDates();
+    });
   }
 
   openAppointmentForm() {
     const dialogRef = this.dialog.open(AppointmentFormComponent);
 
-    dialogRef.componentInstance.appointmentAdded.pipe(take(1)).subscribe((appointment: Appointment) => {
+    dialogRef.componentInstance.appointmentAdded.subscribe((appointment: Appointment) => {
       if (appointment) {
         this.appointmentService.addAppointment(appointment);
       }
@@ -40,7 +45,7 @@ export class CalendarViewComponent implements OnInit {
       data: appointment
     });
 
-    dialogRef.componentInstance.appointmentAdded.pipe(take(1)).subscribe((updatedAppointment: Appointment) => {
+    dialogRef.componentInstance.appointmentAdded.subscribe((updatedAppointment: Appointment) => {
       if (updatedAppointment) {
         this.appointmentService.updateAppointment(updatedAppointment);
       }
@@ -48,14 +53,43 @@ export class CalendarViewComponent implements OnInit {
     });
   }
 
-  drop(event: CdkDragDrop<Appointment[]>) {
-    this.appointments$.pipe(take(1)).subscribe(currentAppointments => {
-      moveItemInArray(currentAppointments, event.previousIndex, event.currentIndex);
-      this.appointmentService.updateAppointments(currentAppointments);
-    });
+  getAppointmentsOnDate(date: Date): Appointment[] {
+    const dateString = date.toISOString().slice(0, 10); // Get YYYY-MM-DD format
+    return this.appointments.filter(appointment => appointment.date.toISOString().slice(0, 10) === dateString);
   }
 
-  deleteAppointment(id: number) {
-    this.appointmentService.deleteAppointment(id);
+  dateSelected(date: Date) {
+    this.selectedDate = date;
+    this.generateCalendarDates();
+  }
+
+  generateCalendarDates() {
+    if (!this.selectedDate) {
+      return;
+    }
+
+    const start = new Date(this.selectedDate.getFullYear(), this.selectedDate.getMonth(), 1);
+    const end = new Date(this.selectedDate.getFullYear(), this.selectedDate.getMonth() + 1, 0);
+
+    this.calendarDates = this.getDaysArray(start, end);
+  }
+
+  getDaysArray(start: Date, end: Date): Date[] {
+    const arr = [];
+    for (let dt = new Date(start); dt <= end; dt.setDate(dt.getDate() + 1)) {
+      arr.push(new Date(dt));
+    }
+    return arr;
+  }
+
+  dateClass(): MatCalendarCellCssClasses {
+    return (date: Date): MatCalendarCellCssClasses => {
+      const appointments = this.getAppointmentsOnDate(date);
+      if (appointments.length > 0) {
+        return 'has-appointment';
+      } else {
+        return '';
+      }
+    };
   }
 }
