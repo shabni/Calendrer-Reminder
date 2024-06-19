@@ -3,7 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { AppointmentService } from '../../shared/appointment.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Observable, take } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 import { Appointment } from '../../shared/appointment';
+import { AppointmentFormComponent } from '../appointment-form/appointment-form.component';
 
 @Component({
   selector: 'app-calendar-view',
@@ -13,10 +15,24 @@ import { Appointment } from '../../shared/appointment';
 export class CalendarViewComponent implements OnInit {
   appointments$: Observable<Appointment[]>;
 
-  constructor(private appointmentService: AppointmentService) {}
+  constructor(
+    private appointmentService: AppointmentService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
     this.appointments$ = this.appointmentService.appointments$;
+  }
+
+  openAppointmentForm() {
+    const dialogRef = this.dialog.open(AppointmentFormComponent);
+
+    dialogRef.componentInstance.appointmentAdded.pipe(take(1)).subscribe((appointment: Appointment) => {
+      if (appointment) {
+        this.appointmentService.addAppointment(appointment);
+      }
+      dialogRef.close();
+    });
   }
 
   drop(event: CdkDragDrop<Appointment[]>) {

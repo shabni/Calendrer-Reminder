@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppointmentService } from '../../shared/appointment.service';
-import { v4 as uuidv4 } from 'uuid';
 import { Appointment } from 'src/app/shared/appointment';
 
 
@@ -13,6 +12,7 @@ import { Appointment } from 'src/app/shared/appointment';
 export class AppointmentFormComponent  {
 
   appointmentForm: FormGroup;
+  @Output() appointmentAdded = new EventEmitter<Appointment>();
 
   constructor(private fb: FormBuilder, private appointmentService: AppointmentService) {
     this.buildForm()
@@ -25,16 +25,16 @@ export class AppointmentFormComponent  {
     });
   }
 
-  onSubmit() {
+  onSave() {
     if (this.appointmentForm.valid) {
-      const appointment: Appointment = {
-        id: uuidv4(),
-        title: this.appointmentForm.value.title,
-        date: new Date(this.appointmentForm.value.date)
-      };
-      this.appointmentService.addAppointment(appointment);
-      this.appointmentForm.reset();
+      const newAppointment: Appointment = this.appointmentForm.value;
+      newAppointment.id = Math.random().toString(36).substr(2, 9); // Generate a random ID
+      this.appointmentAdded.emit(newAppointment);
     }
+  }
+
+  onClose() {
+    this.appointmentAdded.emit(null);
   }
 
 }
