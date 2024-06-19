@@ -1,6 +1,6 @@
 <div class="calendar-container">
-  <button mat-raised-button color="primary" (click)="openAppointmentForm()">Add Appointment</button>
 
+  <button mat-raised-button color="primary" (click)="openAppointmentForm()">Add Appointment</button>
   <div class="navigation-container">
     <button mat-icon-button (click)="previousMonth()">
       <mat-icon>chevron_left</mat-icon>
@@ -15,18 +15,21 @@
     </button>
   </div>
 
-  <!-- <mat-calendar [selected]="selectedDate" (selectedChange)="dateSelected($event)" [dateClass]="dateClass">
-  </mat-calendar> -->
-
   <div class="calendar-events-grid">
     <div class="calendar-day" *ngFor="let date of calendarDates">
       <h3 class="calendar-day-header">{{ date | date: 'EEEE, MMM d' }}</h3>
-      <div class="calendar-events-list">
-        <div *ngFor="let appointment of getAppointmentsOnDate(date)">
-          <div class="calendar-event" (click)="editAppointment(appointment)">
-            <div class="calendar-event-time">{{ appointment.date | date: 'h:mm a' }}</div>
-            <div class="calendar-event-title">{{ appointment.title }}</div>
-          </div>
+      <div class="calendar-events-list"
+           cdkDropList
+           [cdkDropListData]="getAppointmentsOnDate(date)"
+           [cdkDropListConnectedTo]="getConnectedDropLists(date)"
+           [id]="date.toDateString()">
+        <div class="calendar-event"  (click)="editAppointment(appointment)"
+             *ngFor="let appointment of getAppointmentsOnDate(date)"
+             cdkDrag
+             [cdkDragData]="appointment"
+             (cdkDragEnded)="onDragEnded($event, appointment)">
+          <div class="calendar-event-time">{{ appointment.date | date: 'h:mm a' }}</div>
+          <div class="calendar-event-title">{{ appointment.title }}</div>
         </div>
       </div>
     </div>

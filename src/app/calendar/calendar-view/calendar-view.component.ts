@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppointmentService } from '../../shared/appointment.service';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Observable, take } from 'rxjs';
+import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material/dialog';
 import { Appointment } from '../../shared/appointment';
 import { AppointmentFormComponent } from '../appointment-form/appointment-form.component';
@@ -101,5 +100,27 @@ export class CalendarViewComponent implements OnInit {
   nextMonth() {
     this.selectedDate = new Date(this.selectedDate.getFullYear(), this.selectedDate.getMonth() + 1, 1);
     this.generateCalendarDates();
+  }
+
+  onDragEnded(event: CdkDragEnd<any>, appointment) {
+
+    
+    const appointmentToMove: Appointment = event.source.data;
+
+    const previousDateIndex = this.calendarDates.findIndex(d => d.toDateString() === appointmentToMove.date.toDateString());
+    const dropTargetDateIndex = this.calendarDates.findIndex(d => event.source.dropContainer.id === d.toDateString());
+
+    if (dropTargetDateIndex !== -1) {
+      const newDate: Date = this.calendarDates[dropTargetDateIndex-1];
+
+      if (previousDateIndex !== dropTargetDateIndex) {
+        appointmentToMove.date = new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate());
+      }
+      this.appointmentService.updateAppointment(appointmentToMove);
+    }
+  }
+
+  getConnectedDropLists(date: Date): string[] {
+    return this.calendarDates.map(d => d.toDateString());
   }
 }
