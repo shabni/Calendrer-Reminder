@@ -7,9 +7,14 @@
         <h3>{{ appointment.title }}</h3>
         <p>{{ appointment.date | date }}</p>
       </div>
-      <button mat-icon-button (click)="deleteAppointment(appointment.id)">
-        <mat-icon>delete</mat-icon>
-      </button>
+      <div class="appointment-actions">
+        <button mat-icon-button (click)="editAppointment(appointment)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button (click)="deleteAppointment(appointment.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
     </div>
   </div>
 </div>

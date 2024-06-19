@@ -35,6 +35,19 @@ export class CalendarViewComponent implements OnInit {
     });
   }
 
+  editAppointment(appointment: Appointment) {
+    const dialogRef = this.dialog.open(AppointmentFormComponent, {
+      data: appointment
+    });
+
+    dialogRef.componentInstance.appointmentAdded.pipe(take(1)).subscribe((updatedAppointment: Appointment) => {
+      if (updatedAppointment) {
+        this.appointmentService.updateAppointment(updatedAppointment);
+      }
+      dialogRef.close();
+    });
+  }
+
   drop(event: CdkDragDrop<Appointment[]>) {
     this.appointments$.pipe(take(1)).subscribe(currentAppointments => {
       moveItemInArray(currentAppointments, event.previousIndex, event.currentIndex);
@@ -42,7 +55,7 @@ export class CalendarViewComponent implements OnInit {
     });
   }
 
-  deleteAppointment(id: string) {
+  deleteAppointment(id: number) {
     this.appointmentService.deleteAppointment(id);
   }
 }
