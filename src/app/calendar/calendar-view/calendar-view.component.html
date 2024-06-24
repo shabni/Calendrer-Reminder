@@ -1,8 +1,15 @@
 <div class="calendar-container">
 
-  <button mat-raised-button color="primary" (click)="toggleView()">
-    {{ isDayView ? 'Switch to Month View' : 'Switch to Day View' }}
-  </button>
+  <mat-button-toggle-group color="primary" (change)="toggleView()">
+
+    <mat-button-toggle [checked]="!isDayView">
+      Month View
+    </mat-button-toggle>
+    <mat-button-toggle [checked]="isDayView">
+      Day View
+    </mat-button-toggle>
+    
+  </mat-button-toggle-group>
 
   <button mat-raised-button color="primary" (click)="openAppointmentForm()">Add Appointment</button>
   

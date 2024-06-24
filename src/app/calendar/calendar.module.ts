@@ -13,6 +13,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatNativeDateModule,
     MatIconModule,
     DragDropModule,
-    MatDialogModule
+    MatDialogModule,
+    MatButtonToggleModule
   ]
 })
 export class CalendarModule { }
