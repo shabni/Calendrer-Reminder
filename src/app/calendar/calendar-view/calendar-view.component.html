@@ -1,37 +1,86 @@
 <div class="calendar-container">
+
+  <button mat-raised-button color="primary" (click)="toggleView()">
+    {{ isDayView ? 'Switch to Month View' : 'Switch to Day View' }}
+  </button>
+
   <button mat-raised-button color="primary" (click)="openAppointmentForm()">Add Appointment</button>
-  <div class="navigation-container">
-    <button mat-icon-button (click)="previousMonth()">
-      <mat-icon>chevron_left</mat-icon>
-    </button>
+  
+  <ng-container *ngIf="!isDayView">
 
-    <div class="current-month-year">
-      {{ selectedDate | date: 'MMMM yyyy' }}
+    <div class="navigation-container">
+      <button mat-icon-button (click)="previousMonth()">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+  
+      <div class="current-month-year">
+        {{ selectedDate | date: 'MMMM yyyy' }}
+      </div>
+  
+      <button mat-icon-button (click)="nextMonth()">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
     </div>
 
-    <button mat-icon-button (click)="nextMonth()">
-      <mat-icon>chevron_right</mat-icon>
-    </button>
+    
+    <div class="calendar-events-grid">
+      <div class="calendar-day" *ngFor="let date of calendarDates; let i = index;" (mouseup)="onMouseUp(i)">
+          <h3 class="calendar-day-header">{{ date | date: 'EEEE, MMM d' }}</h3>
+          <div class="calendar-events-list"
+               cdkDropList
+               [cdkDropListData]="getAppointmentsOnDate(date)"
+               [cdkDropListConnectedTo]="getConnectedDropLists(date)">
+              <div class="calendar-event"
+                   *ngFor="let appointment of getAppointmentsOnDate(date)"
+                   cdkDrag
+                   [cdkDragData]="appointment"
+                   (click)="editAppointment(appointment)"
+                   (cdkDragStarted)="onDragStarted(appointment)">
+                  <div class="calendar-event-time">{{ appointment.time }}</div>
+                  <div class="calendar-event-title">{{ appointment.title }}</div>
+              </div>
+          </div>
+      </div>
   </div>
+  </ng-container>
 
-  <div class="calendar-events-grid">
-    <div class="calendar-day" *ngFor="let date of calendarDates; let i = index;" (mouseup)="onMouseUp(i)">
-        <h3 class="calendar-day-header">{{ date | date: 'EEEE, MMM d' }}</h3>
-        <div class="calendar-events-list"
-             cdkDropList
-             [cdkDropListData]="getAppointmentsOnDate(date)"
-             [cdkDropListConnectedTo]="getConnectedDropLists(date)">
-            <div class="calendar-event"
-                 *ngFor="let appointment of getAppointmentsOnDate(date)"
-                 cdkDrag
-                 [cdkDragData]="appointment"
-                 (click)="editAppointment(appointment)"
-                 (cdkDragStarted)="onDragStarted(appointment)">
-                <div class="calendar-event-time">{{ appointment.time }}</div>
-                <div class="calendar-event-title">{{ appointment.title }}</div>
-            </div>
-        </div>
+
+  <ng-container *ngIf="isDayView">
+    <div class="navigation-container">
+      <button mat-icon-button (click)="previousDay()">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <div class="current-day">
+        {{ selectedDate | date: 'EEEE, MMM d, yyyy' }}
+      </div>
+      <button mat-icon-button (click)="nextDay()">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
     </div>
-</div>
+  
+    <div class="day-view-container">
+      <div class="hour-bars">
+        <div class="hour-bar" *ngFor="let hour of hoursOfDay; let i = index" cdkDropList
+        (mouseup)="onMouseUpHourBar(i)"
+            [cdkDropListData]="getAppointmentsOnHour(hour, selectedDate)"
+            [cdkDropListConnectedTo]="['hour-bars']">
+          <div class="hour">{{ hour }}:00</div>
+          <div class="hour-appointments">
+            <div class="calendar-event"
+                *ngFor="let appointment of getAppointmentsOnHour(hour, selectedDate)"
+                cdkDrag
+                [cdkDragData]="appointment"
+                (click)="editAppointment(appointment)"
+                (cdkDragStarted)="onDragStarted(appointment)">
+              <div class="calendar-event-time">{{ appointment.time }}</div>
+              <div class="calendar-event-title">{{ appointment.title }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  
+  
 
 </div>

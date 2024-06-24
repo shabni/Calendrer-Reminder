@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AppointmentService } from '../../shared/appointment.service';
-import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material/dialog';
 import { Appointment } from '../../shared/appointment';
 import { AppointmentFormComponent } from '../appointment-form/appointment-form.component';
@@ -15,6 +14,8 @@ export class CalendarViewComponent implements OnInit {
   appointments: Appointment[] = [];
   selectedDate: Date = new Date();
   calendarDates: Date[] = [];
+  isDayView: boolean = false; 
+  hoursOfDay: number[] = Array.from({ length: 24 }, (_, i) => i)
 
   draggedAppointment: Appointment | null = null;
 
@@ -104,6 +105,16 @@ export class CalendarViewComponent implements OnInit {
     this.generateCalendarDates();
   }
 
+  previousDay() {
+    this.selectedDate = new Date(this.selectedDate.getFullYear(), this.selectedDate.getMonth(), this.selectedDate.getDate() - 1);
+    this.generateCalendarDates();
+  }
+
+  nextDay() {
+    this.selectedDate = new Date(this.selectedDate.getFullYear(), this.selectedDate.getMonth(), this.selectedDate.getDate() + 1);
+    this.generateCalendarDates();
+  }
+
 onMouseUp( i) {
 
   if (this.draggedAppointment && this.calendarDates[i]) {
@@ -118,7 +129,6 @@ onMouseUp( i) {
         this.draggedAppointment.date.getSeconds()
     );
 
-
     this.appointmentService.updateAppointment(this.draggedAppointment);
   }
 
@@ -131,6 +141,58 @@ onMouseUp( i) {
   }
 
   onDragStarted(appointment: Appointment) {
+
     this.draggedAppointment = appointment;
+  }
+
+  toggleView() {
+    this.isDayView = !this.isDayView;
+  }
+
+  
+  
+  getAppointmentsOnHour(hour: number, date: Date): Appointment[] {
+    const appointmentsOnHour = this.appointments.filter(appointment => {
+      const appointmentDate = new Date(appointment.date);
+      const appointmentTime = appointment.time.split(':');
+      const appointmentHour = parseInt(appointmentTime[0], 10);
+      const appointmentMinute = parseInt(appointmentTime[1], 10);
+  
+      return appointmentHour === hour &&
+             appointmentMinute >= 0 && appointmentMinute < 60 &&
+             appointmentDate.getDate() === date.getDate() &&
+             appointmentDate.getMonth() === date.getMonth() &&
+             appointmentDate.getFullYear() === date.getFullYear();
+    });
+    return appointmentsOnHour;
+  }
+  
+  
+  onMouseUpHourBar(i: number) {
+ 
+    if (this.draggedAppointment) {
+      const draggedDate = new Date(this.draggedAppointment.date);
+      let appointmentTime: string;
+  
+            if (this.hoursOfDay[i] < 10) {
+        appointmentTime = `0${this.hoursOfDay[i]}:00`; 
+      } else {
+        appointmentTime = `${this.hoursOfDay[i]}:00`; 
+      }
+  
+      const newDate = new Date(
+        draggedDate.getFullYear(),
+        draggedDate.getMonth(),
+        draggedDate.getDate(),
+        parseInt(appointmentTime.split(':')[0]), 
+        parseInt(appointmentTime.split(':')[1]),         0 
+      );
+
+      this.draggedAppointment.time = `${appointmentTime}`;
+      this.draggedAppointment.date = newDate;
+      this.appointmentService.updateAppointment(this.draggedAppointment);
+    }
+  
+    this.draggedAppointment = null;
   }
 }

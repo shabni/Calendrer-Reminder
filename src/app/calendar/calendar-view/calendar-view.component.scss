@@ -4,19 +4,27 @@
   align-items: center;
 }
 
+
 .navigation-container {
   display: flex;
   justify-content: space-around;
   align-items: center;
   width: 100%;
   margin-bottom: 10px;
+
+  button {
+    background-color: #e0e0e0;
+  }
+
+  
 }
 
-.current-month-year {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
+.current-month-year,
+  .current-day {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
 
 .calendar-events-grid {
   display: grid;
@@ -54,4 +62,56 @@
 .calendar-event-title {
   font-size: 16px;
   font-weight: bold;
+}
+
+.day-view-container {
+  width: 100%;
+  margin-top: 20px;
+
+  .hour-bars {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .hour-bar {
+      width: 100%;
+      padding: 10px;
+      background-color: #f0f0f0;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      cursor: pointer;
+
+      .hour {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .hour-appointments {
+        display: flex;
+        flex-wrap: wrap;
+
+        .calendar-event {
+          padding: 5px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          cursor: pointer;
+          background-color: #2196F3;
+          color: #fff;
+          margin-right: 5px;
+          margin-bottom: 5px;
+
+          .calendar-event-time {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+          }
+
+          .calendar-event-title {
+            font-size: 14px;
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
 }
