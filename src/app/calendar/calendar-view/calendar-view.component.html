@@ -15,22 +15,23 @@
   </div>
 
   <div class="calendar-events-grid">
-    <div class="calendar-day" *ngFor="let date of calendarDates">
-      <h3 class="calendar-day-header">{{ date | date: 'EEEE, MMM d' }}</h3>
-      <div class="calendar-events-list"
-           cdkDropList
-           [cdkDropListData]="getAppointmentsOnDate(date)"
-           [cdkDropListConnectedTo]="getConnectedDropLists(date)"
-           [id]="date.toDateString()">
-        <div class="calendar-event"  (click)="editAppointment(appointment)"
-             *ngFor="let appointment of getAppointmentsOnDate(date)"
-             cdkDrag
-             [cdkDragData]="appointment"
-             (cdkDragEnded)="onDragEnded($event, appointment)">
-          <div class="calendar-event-time">{{ appointment.time }}</div>
-          <div class="calendar-event-title">{{ appointment.title }}</div>
+    <div class="calendar-day" *ngFor="let date of calendarDates; let i = index;" (mouseup)="onMouseUp(i)">
+        <h3 class="calendar-day-header">{{ date | date: 'EEEE, MMM d' }}</h3>
+        <div class="calendar-events-list"
+             cdkDropList
+             [cdkDropListData]="getAppointmentsOnDate(date)"
+             [cdkDropListConnectedTo]="getConnectedDropLists(date)">
+            <div class="calendar-event"
+                 *ngFor="let appointment of getAppointmentsOnDate(date)"
+                 cdkDrag
+                 [cdkDragData]="appointment"
+                 (click)="editAppointment(appointment)"
+                 (cdkDragStarted)="onDragStarted(appointment)">
+                <div class="calendar-event-time">{{ appointment.time }}</div>
+                <div class="calendar-event-title">{{ appointment.title }}</div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
+
 </div>

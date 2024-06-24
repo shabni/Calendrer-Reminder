@@ -16,6 +16,8 @@ export class CalendarViewComponent implements OnInit {
   selectedDate: Date = new Date();
   calendarDates: Date[] = [];
 
+  draggedAppointment: Appointment | null = null;
+
   constructor(
     private appointmentService: AppointmentService,
     private dialog: MatDialog
@@ -102,23 +104,33 @@ export class CalendarViewComponent implements OnInit {
     this.generateCalendarDates();
   }
 
-  onDragEnded(event: CdkDragEnd<any>, appointment) {
-    const appointmentToMove: Appointment = event.source.data;
+onMouseUp( i) {
 
-    const previousDateIndex = this.calendarDates.findIndex(d => d.toDateString() === appointmentToMove.date.toDateString());
-    const dropTargetDateIndex = this.calendarDates.findIndex(d => event.source.dropContainer.id === d.toDateString());
+  if (this.draggedAppointment && this.calendarDates[i]) {
+    const newDate = this.calendarDates[i];
+    
+    this.draggedAppointment.date = new Date(
+        newDate.getFullYear(),
+        newDate.getMonth(),
+        newDate.getDate(),
+        this.draggedAppointment.date.getHours(),
+        this.draggedAppointment.date.getMinutes(),
+        this.draggedAppointment.date.getSeconds()
+    );
 
-    if (dropTargetDateIndex !== -1) {
-      const newDate: Date = this.calendarDates[dropTargetDateIndex - 1];
 
-      if (previousDateIndex !== dropTargetDateIndex) {
-        appointmentToMove.date = new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate());
-      }
-      this.appointmentService.updateAppointment(appointmentToMove);
-    }
+    this.appointmentService.updateAppointment(this.draggedAppointment);
   }
+
+  this.draggedAppointment = null;
+
+}
 
   getConnectedDropLists(date: Date): string[] {
     return this.calendarDates.map(d => d.toDateString());
+  }
+
+  onDragStarted(appointment: Appointment) {
+    this.draggedAppointment = appointment;
   }
 }
