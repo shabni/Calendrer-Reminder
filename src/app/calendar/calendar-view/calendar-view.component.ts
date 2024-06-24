@@ -115,7 +115,7 @@ export class CalendarViewComponent implements OnInit {
     this.generateCalendarDates();
   }
 
-onMouseUp( i) {
+onMouseUp( i:number) {
 
   if (this.draggedAppointment && this.calendarDates[i]) {
     const newDate = this.calendarDates[i];

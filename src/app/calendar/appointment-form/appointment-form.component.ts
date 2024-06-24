@@ -11,7 +11,7 @@ import { Appointment } from 'src/app/shared/appointment';
 export class AppointmentFormComponent {
   appointmentForm: FormGroup;
 
-  @Output() appointmentAdded = new EventEmitter<Appointment>();
+  @Output() appointmentAdded = new EventEmitter<Appointment| null>() ;
 
   constructor(
     private fb: FormBuilder,
