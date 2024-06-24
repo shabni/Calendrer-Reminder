@@ -1,5 +1,4 @@
 <div class="calendar-container">
-
   <button mat-raised-button color="primary" (click)="openAppointmentForm()">Add Appointment</button>
   <div class="navigation-container">
     <button mat-icon-button (click)="previousMonth()">
@@ -28,7 +27,7 @@
              cdkDrag
              [cdkDragData]="appointment"
              (cdkDragEnded)="onDragEnded($event, appointment)">
-          <div class="calendar-event-time">{{ appointment.date | date: 'h:mm a' }}</div>
+          <div class="calendar-event-time">{{ appointment.time }}</div>
           <div class="calendar-event-title">{{ appointment.title }}</div>
         </div>
       </div>

@@ -3,13 +3,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Appointment } from 'src/app/shared/appointment';
 
-
 @Component({
   selector: 'app-appointment-form',
   templateUrl: './appointment-form.component.html',
   styleUrls: ['./appointment-form.component.scss']
 })
-export class AppointmentFormComponent  {
+export class AppointmentFormComponent {
   appointmentForm: FormGroup;
 
   @Output() appointmentAdded = new EventEmitter<Appointment>();
@@ -22,7 +21,8 @@ export class AppointmentFormComponent  {
     this.appointmentForm = this.fb.group({
       id: [this.data?.id || null],
       title: ['', Validators.required],
-      date: ['', Validators.required]
+      date: ['', Validators.required],
+      time: ['', Validators.required] // Add this line
     });
   }
 

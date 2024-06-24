@@ -103,15 +103,13 @@ export class CalendarViewComponent implements OnInit {
   }
 
   onDragEnded(event: CdkDragEnd<any>, appointment) {
-
-    
     const appointmentToMove: Appointment = event.source.data;
 
     const previousDateIndex = this.calendarDates.findIndex(d => d.toDateString() === appointmentToMove.date.toDateString());
     const dropTargetDateIndex = this.calendarDates.findIndex(d => event.source.dropContainer.id === d.toDateString());
 
     if (dropTargetDateIndex !== -1) {
-      const newDate: Date = this.calendarDates[dropTargetDateIndex-1];
+      const newDate: Date = this.calendarDates[dropTargetDateIndex - 1];
 
       if (previousDateIndex !== dropTargetDateIndex) {
         appointmentToMove.date = new Date(newDate.getFullYear(), newDate.getMonth(), newDate.getDate());
