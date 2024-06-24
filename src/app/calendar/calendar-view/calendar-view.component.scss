@@ -9,7 +9,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  width: 100%;
+  width: 300px;
   margin-bottom: 10px;
 
   button {
@@ -17,6 +17,17 @@
   }
 
   
+}
+
+.action-bar {
+  width: 100%;
+  display: flex;
+  justify-content: center; /* Center toggle buttons horizontally */
+  margin-bottom: 10px;
+}
+
+.add-appointment-button {
+  margin-left: auto; /* Push "Add Appointment" button to the right */
 }
 
 .current-month-year,
