@@ -175,19 +175,20 @@ onMouseUp( i:number) {
     if (this.draggedAppointment) {
       const draggedDate = new Date(this.draggedAppointment.date);
       let appointmentTime: string;
-  
-            if (this.hoursOfDay[i] < 10) {
-        appointmentTime = `0${this.hoursOfDay[i]}:00`; 
-      } else {
-        appointmentTime = `${this.hoursOfDay[i]}:00`; 
-      }
-  
+
+      const currentMinutes = this.draggedAppointment.time.split(':')[1];
+
+    if (this.hoursOfDay[i] < 10) {
+      appointmentTime = `0${this.hoursOfDay[i]}:${currentMinutes}`;
+    } else {
+      appointmentTime = `${this.hoursOfDay[i]}:${currentMinutes}`;
+    }
       const newDate = new Date(
         draggedDate.getFullYear(),
         draggedDate.getMonth(),
         draggedDate.getDate(),
         parseInt(appointmentTime.split(':')[0]), 
-        parseInt(appointmentTime.split(':')[1]),         0 
+        parseInt(appointmentTime.split(':')[1]),0 
       );
 
       this.draggedAppointment.time = `${appointmentTime}`;
