@@ -14,7 +14,7 @@ export class CalendarViewComponent implements OnInit {
   appointments: Appointment[] = [];
   selectedDate: Date = new Date();
   calendarDates: Date[] = [];
-  isDayView: boolean = false; 
+  isDayView: boolean = true; 
   hoursOfDay: number[] = Array.from({ length: 24 }, (_, i) => i)
 
   draggedAppointment: Appointment | null = null;
