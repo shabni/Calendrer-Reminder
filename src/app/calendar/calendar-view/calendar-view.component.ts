@@ -22,7 +22,9 @@ export class CalendarViewComponent implements OnInit {
   constructor(
     private appointmentService: AppointmentService,
     private dialog: MatDialog
-  ) {}
+  ) {
+    this.selectedDate.setHours(0, 0, 0, 0)
+  }
 
   ngOnInit() {
     this.appointmentService.appointments$.subscribe(appointments => {
@@ -32,7 +34,9 @@ export class CalendarViewComponent implements OnInit {
   }
 
   openAppointmentForm() {
-    const dialogRef = this.dialog.open(AppointmentFormComponent);
+    const dialogRef = this.dialog.open(AppointmentFormComponent, {
+      data: {date:this.selectedDate}
+    });
 
     dialogRef.componentInstance.appointmentAdded.subscribe((appointment: Appointment) => {
       if (appointment) {
@@ -66,7 +70,10 @@ export class CalendarViewComponent implements OnInit {
   }
 
   dateSelected(date: Date) {
+
+    console.log('before',this.selectedDate)
     this.selectedDate = date;
+    console.log('after',this.selectedDate)
     this.generateCalendarDates();
   }
 

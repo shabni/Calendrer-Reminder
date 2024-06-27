@@ -29,7 +29,10 @@ export class AppointmentFormComponent {
 
   ngOnInit() {
     if (this.data) {
-      this.isEdit = true
+
+      if(this.data.id){
+        this.isEdit = true
+      }
       this.appointmentForm.patchValue(this.data);
     }
   }
