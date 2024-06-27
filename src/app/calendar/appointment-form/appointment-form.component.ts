@@ -10,6 +10,7 @@ import { Appointment } from 'src/app/shared/appointment';
 })
 export class AppointmentFormComponent {
   appointmentForm: FormGroup;
+  isEdit: boolean = false
 
   @Output() appointmentAdded = new EventEmitter<Appointment| null>() ;
 
@@ -28,6 +29,7 @@ export class AppointmentFormComponent {
 
   ngOnInit() {
     if (this.data) {
+      this.isEdit = true
       this.appointmentForm.patchValue(this.data);
     }
   }

@@ -4,13 +4,21 @@ form {
     gap: 16px;
     width: 100%;
     max-width: 400px;
+    button {
+      align-self: flex-end;
+    }
+    
+  }
+
+  .header-container{
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    height: 70px;
   }
   
   mat-form-field {
     width: 100%;
   }
   
-  button {
-    align-self: flex-end;
-  }
   
