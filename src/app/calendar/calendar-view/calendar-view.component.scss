@@ -76,6 +76,21 @@
   cursor: pointer;
   background-color: #2196F3; 
   color: #fff; 
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  min-width: 120px;
+
+  button.mat-icon-button {
+    color: red;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
 }
 

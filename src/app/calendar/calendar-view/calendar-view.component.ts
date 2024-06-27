@@ -57,8 +57,13 @@ export class CalendarViewComponent implements OnInit {
     });
   }
 
+  deleteAppointment(id: number, event: Event) {
+    event.stopPropagation();
+    this.appointmentService.deleteAppointment(id);
+  }
+
   getAppointmentsOnDate(date: Date): Appointment[] {
-    const dateString = date.toISOString().slice(0, 10); // Get YYYY-MM-DD format
+    const dateString = date.toISOString().slice(0, 10);
     return this.appointments.filter(appointment => appointment.date.toISOString().slice(0, 10) === dateString);
   }
 
