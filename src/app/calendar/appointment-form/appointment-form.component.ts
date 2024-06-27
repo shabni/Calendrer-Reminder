@@ -22,7 +22,7 @@ export class AppointmentFormComponent {
       id: [this.data?.id || null],
       title: ['', Validators.required],
       date: ['', Validators.required],
-      time: ['', Validators.required] // Add this line
+      time: ['', Validators.required]
     });
   }
 

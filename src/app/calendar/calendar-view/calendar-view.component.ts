@@ -32,9 +32,7 @@ export class CalendarViewComponent implements OnInit {
   }
 
   openAppointmentForm() {
-    const dialogRef = this.dialog.open(AppointmentFormComponent, {
-      data: {date:this.selectedDate}
-    });
+    const dialogRef = this.dialog.open(AppointmentFormComponent);
 
     dialogRef.componentInstance.appointmentAdded.subscribe((appointment: Appointment) => {
       if (appointment) {
