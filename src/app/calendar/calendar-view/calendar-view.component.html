@@ -5,6 +5,24 @@
       <button mat-raised-button color="primary" (click)="openAppointmentForm()">Add Appointment</button>
     </div>
 
+    <div class="notification-settings">
+      <button mat-stroked-button type="button" (click)="enableDesktopNotifications()"
+        *ngIf="notificationPermission === 'default'">
+        <mat-icon>notifications_active</mat-icon>
+        Enable desktop notifications
+      </button>
+      <p *ngIf="notificationPermission === 'granted'">
+        <mat-icon>notifications_active</mat-icon>
+        Desktop notifications enabled
+      </p>
+      <p *ngIf="notificationPermission === 'denied'">
+        Notifications are blocked. Allow them in your browser's site settings.
+      </p>
+      <p *ngIf="notificationPermission === 'unsupported'">
+        Desktop notifications are not supported by this browser.
+      </p>
+    </div>
+
     <mat-calendar [selected]="selectedDate" (selectedChange)="dateSelected($event)"></mat-calendar>
   </div>
 
